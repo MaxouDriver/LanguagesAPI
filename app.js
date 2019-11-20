@@ -13,6 +13,8 @@ var toolRouter = require('./routes/tool');
 var exampleRouter = require('./routes/example');
 var searchRouter = require('./routes/search');
 
+var db = require('./utils/database.js');
+
 var app = express();
 
 // view engine setup
