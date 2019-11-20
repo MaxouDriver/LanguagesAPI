@@ -1,7 +1,7 @@
-var express = require('express');
-var mongoose = require('mongoose');
-var Tag = require('../model/tag');
-var router = express.Router();
+const express = require('express');
+const mongoose = require('mongoose');
+const Tag = require('../model/tag');
+const router = express.Router();
 
 router.get('/', function(req, res, next) {
   Tag.find({}, function(err, tags) {
@@ -16,13 +16,13 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  var tag = req.body.tag;
+  const tag = req.body.tag;
 
   if (tag === undefined) {
     return res.status(500).send({error: true, message: "Missing parameter tag"});
   } 
 
-  var testTag = new Tag({
+  const testTag = new Tag({
     _id: new mongoose.Types.ObjectId(),
     tag: tag,
   });
@@ -35,8 +35,8 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next) {
-  var newData = {};
-  var tag = req.body.tag;
+  let newData = {};
+  const tag = req.body.tag;
 
   if (tag !== undefined) newData.tag = tag;
 

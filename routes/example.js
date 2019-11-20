@@ -1,7 +1,7 @@
-var express = require('express');
-var mongoose = require('mongoose');
-var Example = require('../model/example');
-var router = express.Router();
+const express = require('express');
+const mongoose = require('mongoose');
+const Example = require('../model/example');
+const router = express.Router();
 
 router.get('/', function(req, res, next) {
   Example.find({}, function(err, examples) {
@@ -16,15 +16,13 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  var title = req.body.title;
-  var desc = req.body.desc;
-  var link = req.body.link;
+  const {title, desc, link} = req.body;
 
   if (title === undefined || desc === undefined || link === undefined) {
     return res.status(500).send({error: true, message: "Missing parameter, please refer to doc"});
   } 
 
-  var testExample = new Example({
+  const testExample = new Example({
     _id: new mongoose.Types.ObjectId(),
     title: title,
     desc: desc,
@@ -39,10 +37,8 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next) {
-  var newData = {};
-  var title = req.body.title;
-  var desc = req.body.desc;
-  var link = req.body.link;
+  let newData = {};
+  const {title, desc, link} = req.body;
 
   if (title !== undefined) newData.title = title;
   if (desc !== undefined) newData.desc = desc;

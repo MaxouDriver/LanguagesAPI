@@ -1,7 +1,7 @@
-var express = require('express');
-var mongoose = require('mongoose');
-var Tool = require('../model/tool');
-var router = express.Router();
+const express = require('express');
+const mongoose = require('mongoose');
+const Tool = require('../model/tool');
+const router = express.Router();
 
 router.get('/', function(req, res, next) {
   Tool.find({}, function(err, tools) {
@@ -16,16 +16,15 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  var name = req.body.name;
-  var link = req.body.link;
-  var type = req.body.type || [];
-  var use = req.body.use || [];
+  const {name, link} = req.body;
+  const type = req.body.type || [];
+  const use = req.body.use || [];
 
   if (name === undefined || link === undefined) {
     return res.status(500).send({error: true, message: "Missing parameter, please refer to doc"});
   } 
 
-  var testTool = new Tool({
+  const testTool = new Tool({
     _id: new mongoose.Types.ObjectId(),
     name: name,
     link: link,
@@ -41,11 +40,8 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next) {
-  var newData = {};
-  var name = req.body.name;
-  var link = req.body.link;
-  var type = req.body.type;
-  var use = req.body.use;
+  let newData = {};
+  const {name, link, type, use} = req.body;
 
   if (name !== undefined) newData.name = name;
   if (link !== undefined) newData.link = link;

@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
  
-var toolSchema = mongoose.Schema({
+const toolSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: String,
     link: String,
@@ -10,6 +10,6 @@ var toolSchema = mongoose.Schema({
     ],
 });
  
-var Tool = mongoose.model('Tool', toolSchema);
+const Tool = mongoose.model('Tool', toolSchema);
  
 module.exports = Tool;

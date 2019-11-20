@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
  
-var languageSchema = mongoose.Schema({
+const languageSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: String,
     desc: String,
@@ -10,8 +10,9 @@ var languageSchema = mongoose.Schema({
     tools: [mongoose.Schema.Types.ObjectId],
     doc: String,
     examples: [mongoose.Schema.Types.ObjectId],
+    typos: [mongoose.Schema.Types.ObjectId]
 });
  
-var Language = mongoose.model('Language', languageSchema);
+const Language = mongoose.model('Language', languageSchema);
  
 module.exports = Language;

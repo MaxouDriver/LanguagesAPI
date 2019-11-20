@@ -1,7 +1,7 @@
-var express = require('express');
-var mongoose = require('mongoose');
-var Language = require('../model/language');
-var router = express.Router();
+const express = require('express');
+const mongoose = require('mongoose');
+const Language = require('../model/language');
+const router = express.Router();
 
 router.get('/', function(req, res, next) {
   Language.find({}, function(err, languages) {
@@ -16,14 +16,13 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  var name = req.body.name;
-  var desc = req.body.desc;
-  var creator = req.body.creator;
-  var date = new Date(parseInt(req.body.date));
-  var rating = req.body.rating;
-  var tools = req.body.tools || [];
-  var doc = req.body.doc;
-  var examples = req.body.examples || [];
+  const {name, desc, creator, rating, doc, nameTypo, descriptionTypo} = req.body;
+  const date = new Date(parseInt(req.body.date));
+  const tools = req.body.tools || [];
+  const examples = req.body.examples || [];
+  const typos = req.body.typos || [];
+
+  const languagesTypo = req.body.languages_typo || [];
 
   if (name === undefined || desc === undefined || creator === undefined ||
         date === undefined || rating === undefined || 
@@ -31,7 +30,12 @@ router.post('/', function(req, res, next) {
           return res.status(500).send({error: true, message: "Missing parameter, please refer to the doc"});
   } 
 
-  var testLanguage = new Language({
+
+  if (nameTypo === undefined || descriptionTypo === undefined) {
+    return res.status(500).send({error: true, message: "Missing parameter for typography creation, please refer to doc"});
+  } 
+
+  const testLanguage = new Language({
     _id: new mongoose.Types.ObjectId(),
     name: name,
     desc: desc,
@@ -40,26 +44,30 @@ router.post('/', function(req, res, next) {
     rating: rating,
     tools: tools,
     doc: doc,
-    examples: examples
+    examples: examples,
+    typos: typos
   });
 
-  testLanguage.save(function(err) {
+  testLanguage.save(function(err, language) {
       if (err) return res.status(500).send({error: true, message: err});
-      
-      return res.send({error: false, message: "Language successfully saved"});
+      const testTypo = new Typo({
+        _id: new mongoose.Types.ObjectId(),
+        name: nameTypo,
+        description: descriptionTypo,
+        languages: languagesTypo.concat([language.id])
+      });
+
+      testTypo.save(function(err) {
+          if (err) return res.status(500).send({error: true, message: "Error happened when trying to save typo."});
+          
+          return res.send({error: false, message: "Language successfully saved", data: language.id});
+      });
   });
 });
 
 router.put('/:id', function(req, res, next) {
-  var newData = {};
-  var name = req.body.name;
-  var desc = req.body.desc;
-  var creator = req.body.creator;
-  var date = req.body.date;
-  var rating = req.body.rating;
-  var tools = req.body.tools;
-  var doc = req.body.doc;
-  var examples = req.body.examples;
+  let newData = {};
+  const {name, desc, creator, date, rating, tools, doc, examples, typos} = req.body;
 
   if (name !== undefined) newData.name = name;
   if (desc !== undefined) newData.desc = desc;
@@ -69,10 +77,11 @@ router.put('/:id', function(req, res, next) {
   if (tools !== undefined) newData.tools = tools;
   if (doc !== undefined) newData.doc = doc;
   if (examples !== undefined) newData.examples = examples;
+  if (typos !== undefined) newData.typos = typos;
 
   if (name === undefined && desc === undefined && creator === undefined &&
         date === undefined && rating === undefined && tools === undefined &&
-        doc === undefined && examples === undefined) {
+        doc === undefined && examples === undefined && typos === undefined) {
           return res.status(500).send({error: true, message: "Nothing to modify"});
   } 
 

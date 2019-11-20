@@ -1,21 +1,20 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
 
-var indexRouter = require('./routes/index');
-var typoRouter = require('./routes/typo');
-var languageRouter = require('./routes/language');
-var tagRouter = require('./routes/tag');
-var toolRouter = require('./routes/tool');
-var exampleRouter = require('./routes/example');
-var searchRouter = require('./routes/search');
+const indexRouter = require('./routes/index');
+const typoRouter = require('./routes/typo');
+const languageRouter = require('./routes/language');
+const tagRouter = require('./routes/tag');
+const toolRouter = require('./routes/tool');
+const exampleRouter = require('./routes/example');
 
-var db = require('./utils/database.js');
+const db = require('./utils/database.js');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -34,8 +33,7 @@ app.use('/language', languageRouter);
 app.use('/typo', typoRouter);
 app.use('/tag', tagRouter);
 app.use('/tool', toolRouter);
-app.use('/example', exampleRouter);searchRouter
-app.use('/search', searchRouter);
+app.use('/example', exampleRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

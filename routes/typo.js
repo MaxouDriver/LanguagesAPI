@@ -1,7 +1,7 @@
-var express = require('express');
-var mongoose = require('mongoose');
-var Typo = require('../model/typo');
-var router = express.Router();
+const express = require('express');
+const mongoose = require('mongoose');
+const Typo = require('../model/typo');
+const router = express.Router();
 
 router.get('/', function(req, res, next) {
   Typo.find({}, function(err, typos) {
@@ -16,15 +16,15 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  var name = req.body.name;
-  var description = req.body.description;
-  var languages = req.body.languages || [];
+  const name = req.body.name;
+  const description = req.body.description;
+  const languages = req.body.languages || [];
 
   if (name === undefined || description === undefined) {
     return res.status(500).send({error: true, message: "Missing parameter, please refer to doc"});
   } 
 
-  var testTypo = new Typo({
+  const testTypo = new Typo({
     _id: new mongoose.Types.ObjectId(),
     name: name,
     description: description,
@@ -39,10 +39,10 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next) {
-  var newData = {};
-  var name = req.body.name;
-  var description = req.body.description;
-  var languages = req.body.languages;
+  let newData = {};
+  const name = req.body.name;
+  const description = req.body.description;
+  const languages = req.body.languages;
 
   if (name !== undefined) newData.name = name;
   if (description !== undefined) newData.description = description;

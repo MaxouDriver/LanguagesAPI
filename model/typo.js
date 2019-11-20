@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
  
-var typoSchema = mongoose.Schema({
+const typoSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: String,
     description: String,
@@ -9,6 +9,6 @@ var typoSchema = mongoose.Schema({
     ],
 });
  
-var Typo = mongoose.model('Typo', typoSchema);
+const Typo = mongoose.model('Typo', typoSchema);
  
 module.exports = Typo;
