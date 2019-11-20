@@ -6,7 +6,12 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
+var typoRouter = require('./routes/typo');
 var languageRouter = require('./routes/language');
+var tagRouter = require('./routes/tag');
+var toolRouter = require('./routes/tool');
+var exampleRouter = require('./routes/example');
+var searchRouter = require('./routes/search');
 
 var app = express();
 
@@ -24,6 +29,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/language', languageRouter);
+app.use('/typo', typoRouter);
+app.use('/tag', tagRouter);
+app.use('/tool', toolRouter);
+app.use('/example', exampleRouter);searchRouter
+app.use('/search', searchRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

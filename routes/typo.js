@@ -3,23 +3,23 @@ var router = express.Router();
 var db = require('../utils/database.js');
 
 router.get('/', function(req, res, next) {
-  res.send('all languages');
+  res.send('all typos');
 });
 
 router.get('/:id', function(req, res, next) {
-  res.send('specific language');
+  res.send('specific typo');
 });
 
 router.post('/', function(req, res, next) {
-  res.send('new language');
+  res.send('new typo');
 });
 
 router.put('/:id', function(req, res, next) {
-  res.send('modified language');
+  res.send('modified typo');
 });
 
 router.delete('/:id', function(req, res, next) {
-  res.send('delete language');
+  res.send('delete typo');
 });
 
 module.exports = router;
