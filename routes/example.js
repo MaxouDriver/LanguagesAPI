@@ -19,7 +19,7 @@ router.post('/', function(req, res, next) {
   const {title, desc, link} = req.body;
 
   if (title === undefined || desc === undefined || link === undefined) {
-    return res.status(500).send({error: true, message: "Missing parameter, please refer to doc"});
+    return res.status(400).send({error: true, message: "Missing parameter, please refer to doc"});
   } 
 
   const testExample = new Example({
@@ -32,7 +32,7 @@ router.post('/', function(req, res, next) {
   testExample.save(function(err) {
       if (err) return res.status(500).send({error: true, message: "Error happened when trying to save example."});
       
-      return res.send({error: false, message: "Example successfully saved"});
+      return res.status(201).send({error: false, message: "Example successfully saved"});
   });
 });
 
@@ -45,19 +45,19 @@ router.put('/:id', function(req, res, next) {
   if (link !== undefined) newData.link = link;
 
   if (title === undefined && link === undefined && desc === undefined) {
-    return res.status(500).send({error: true, message: "Nothing to modify"});
+    return res.status(400).send({error: true, message: "Nothing to modify"});
   } 
 
   Example.findOneAndUpdate({_id : req.params.id}, newData, {upsert:true}, function(err, doc){
     if (err) return res.status(500).send({error: true, message: "Error happened when trying to modify example"});
-    return res.send({error: false, message: "Example successfully modified"});
+    return res.status(200).send({error: false, message: "Example successfully modified"});
   });
 });
 
 router.delete('/:id', function(req, res, next) {
   Example.remove({ _id: req.params.id }, function(err) {
     if (err) return res.status(500).send({error: true, message: "Error happened when trying to delete example"});
-    return res.send({error: false, message: "Example successfully deleted"});
+    return res.status(200).send({error: false, message: "Example successfully deleted"});
   });
 });
 
