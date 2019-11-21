@@ -5,13 +5,13 @@ const router = express.Router();
 
 router.get('/', function(req, res, next) {
   Example.find({}, function(err, examples) {
-    return res.send(examples);  
+    return res.status(200).send(examples);  
   });
 });
 
 router.get('/:id', function(req, res, next) {
   Example.find({_id: req.params.id}, function(err, example) {
-    return res.send(example);  
+    return res.status(200).send(example);  
   });
 });
 

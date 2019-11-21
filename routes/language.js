@@ -1,17 +1,21 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Language = require('../model/language');
+const Typo = require('../model/typo');
 const router = express.Router();
 
 router.get('/', function(req, res, next) {
-  Language.find({}, function(err, languages) {
-    return res.send(languages);  
+  const idTypo = req.query.id_typo;
+  let query = {};
+  if (idTypo !== undefined) query.typos = idTypo;
+  Language.find(query, function(err, languages) {
+    return res.status(200).send(languages);  
   });
 });
 
 router.get('/:id', function(req, res, next) {
   Language.find({_id: req.params.id}, function(err, language) {
-    return res.send(language);  
+    return res.status(200).send(language);  
   });
 });
 
@@ -27,12 +31,12 @@ router.post('/', function(req, res, next) {
   if (name === undefined || desc === undefined || creator === undefined ||
         date === undefined || rating === undefined || 
         doc === undefined ) {
-          return res.status(500).send({error: true, message: "Missing parameter, please refer to the doc"});
+          return res.status(400).send({error: true, message: "Missing parameter, please refer to the doc"});
   } 
 
 
   if (nameTypo === undefined || descriptionTypo === undefined) {
-    return res.status(500).send({error: true, message: "Missing parameter for typography creation, please refer to doc"});
+    return res.status(400).send({error: true, message: "Missing parameter for typography creation, please refer to doc"});
   } 
 
   const testLanguage = new Language({
@@ -57,10 +61,19 @@ router.post('/', function(req, res, next) {
         languages: languagesTypo.concat([language.id])
       });
 
-      testTypo.save(function(err) {
+      testTypo.save(function(err, typo) {
           if (err) return res.status(500).send({error: true, message: "Error happened when trying to save typo."});
-          
-          return res.send({error: false, message: "Language successfully saved", data: language.id});
+          Language.findOneAndUpdate({_id: language.id},
+            {                        
+                "$push": {
+                    "typos": [
+                      typo.id                                                         
+                    ]
+                }
+            }, {upsert:true}, function(err, doc){
+            if (err) return res.status(500).send({error: true, message: err});
+            return res.status(201).send({error: false, message: "Language successfully saved", data: language.id});
+          });
       });
   });
 });
@@ -82,19 +95,19 @@ router.put('/:id', function(req, res, next) {
   if (name === undefined && desc === undefined && creator === undefined &&
         date === undefined && rating === undefined && tools === undefined &&
         doc === undefined && examples === undefined && typos === undefined) {
-          return res.status(500).send({error: true, message: "Nothing to modify"});
+          return res.status(400).send({error: true, message: "Nothing to modify"});
   } 
 
   Language.findOneAndUpdate({_id : req.params.id}, newData, {upsert:true}, function(err, doc){
     if (err) return res.status(500).send({error: true, message: err});
-    return res.send({error: false, message: "Language successfully modified"});
+    return res.status(200).send({error: false, message: "Language successfully modified"});
   });
 });
 
 router.delete('/:id', function(req, res, next) {
   Language.remove({ _id: req.params.id }, function(err) {
     if (err) return res.status(500).send({error: true, message: "Error happened when trying to delete language"});
-    return res.send({error: false, message: "Language successfully deleted"});
+    return res.status(200).send({error: false, message: "Language successfully deleted"});
   });
 });
 

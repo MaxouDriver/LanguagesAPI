@@ -1,10 +1,10 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
  
-var tagSchema = mongoose.Schema({
+const tagSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     tag: String,
 });
  
-var Tag = mongoose.model('Tag', tagSchema);
+const Tag = mongoose.model('Tag', tagSchema);
  
 module.exports = Tag;

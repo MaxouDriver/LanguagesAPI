@@ -5,13 +5,13 @@ const router = express.Router();
 
 router.get('/', function(req, res, next) {
   Typo.find({}, function(err, typos) {
-    return res.send(typos);  
+    return res.send({error: false, message: "Typos", data: typos});  
   });
 });
 
 router.get('/:id', function(req, res, next) {
   Typo.find({_id: req.params.id}, function(err, typo) {
-    return res.send(typo);  
+    return res.send({error: false, message: "Typo successfully found", data: typo});    
   });
 });
 

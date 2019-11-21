@@ -6,12 +6,16 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "apidoc": "^0.18.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "^4.17.1",
+    "express-api-doc": "^0.0.12",
     "http-errors": "^1.7.3",
+    "jade": "^1.11.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.12",
     "morgan": "~1.9.1",
-    "twig": "~0.10.3"
+    "swagger-ui-express": "^4.1.2"
   }
 }
